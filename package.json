@@ -1,0 +1,45 @@
+{
+  "name": "best-presenter",
+  "version": "1.0.0",
+  "description": "EQI 6축 프레젠테이션 평가 시스템",
+  "main": "electron/main.js",
+  "scripts": {
+    "frontend:install": "cd frontend && npm install",
+    "frontend:build": "cd frontend && npm run build",
+    "backend:build": "cd backend && pyinstaller best-presenter.spec --distpath ../dist-backend --workpath ../build-backend --clean -y",
+    "start": "npm run frontend:build && electron .",
+    "dev": "electron .",
+    "build": "npm run frontend:build && npm run backend:build && electron-builder",
+    "build:mac": "npm run frontend:build && npm run backend:build && electron-builder --mac",
+    "build:win": "npm run frontend:build && npm run backend:build && electron-builder --win",
+    "postinstall": "npm run frontend:install"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.best-presenter.app",
+    "productName": "Best Presenter",
+    "files": [
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "dist-backend/best-presenter-backend",
+        "to": "best-presenter-backend",
+        "filter": ["**/*"]
+      }
+    ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.education"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
